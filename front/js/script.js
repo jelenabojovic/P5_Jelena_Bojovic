@@ -1,12 +1,11 @@
 //get products from API
 getProducts();
 
-//add products to the home page
+//add products to the homepage
 addProducts();
 
  async function getProducts() {
    let products = await fetch("http://localhost:3000/api/products");
-   console.log("the products have been added")
    return products.json();
 }
 
@@ -14,11 +13,12 @@ async function addProducts () {
     let result = await getProducts ()
     .then ((product) => {
         for (let i=0; i < product.length; i++) {
+            
 
             // creation of the link
-            let anchor= document.createElement ("a");
+            let anchor = document.createElement ("a");
             document.getElementById('items').appendChild(anchor);
-            anchor.href = "./product.html?id=${product[i]._id}" ;
+            anchor.href = `./product.html?id= ${product[i]._id}`;
 
             //creation of the article
             let productArticle = document.createElement("article");
@@ -43,6 +43,5 @@ async function addProducts () {
             productDescription.innerHTML = product[i].description;
         }
     });
-    console.log("the products are done")
 }
 
