@@ -1,16 +1,45 @@
 // Get product Id 
-
 let params = (new URL(document.location)).searchParams;
-let id = params.get('id');
+const id = params.get('id');
 
-//Creation of the product description
+//Create product and its description
+
 let itemImage = document.querySelector(".item__img");
 let img = document.createElement("img");
 itemImage.appendChild(img);
-console.log(img);
+let itemTitle = document.getElementById("title");
+let itemPrice = document.getElementById("price");
+let itemDescription = document.getElementById("description");
+let itemColors = document.getElementById("colors");
+
+// Get a unique product by its ID
+
+getItem ();
+
+async function getItem () {
+    await fetch(`http://localhost:3000/api/products/${id}`)
+    .then((response) => response.json())
+    .then (item => {
+     itemImage.src = item.imageUrl;
+     itemImage.alt = item.altTxt;
+     itemTitle.innerHTML = item.name;
+     itemPrice.innerHTML = item.price;
+     itemDescription.innerText = item.description;
+     document.title = item.title;
+
+     let itemColors = document.getElementById("colors");
+     for(let i=0; i < item.colors.length; i++) {
+         let option = document.createElement("option");
+         option.innerText = item.colors [i];
+         itemColors.appendChild(option);
+     }
+    })
+}
 
 
 
-// Add a product and its descriptios to the page
+
+
+
 
 

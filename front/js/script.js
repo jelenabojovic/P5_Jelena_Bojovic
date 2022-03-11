@@ -18,7 +18,7 @@ async function addProducts () {
             // creation of the link
             let anchor = document.createElement ("a");
             document.getElementById('items').appendChild(anchor);
-            anchor.href = `./product.html?id= ${product[i]._id}`;
+            anchor.href = `product.html?id=${product[i]._id}`;
 
             //creation of the article
             let productArticle = document.createElement("article");
