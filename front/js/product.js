@@ -1,40 +1,128 @@
-// Get product Id 
+//// récupération de l'id du produit
 let params = (new URL(document.location)).searchParams;
 const id = params.get('id');
+let product = "";
 
-//Create product and its description
 
-let itemImage = document.querySelector(".item__img");
-let img = document.createElement("img");
-itemImage.appendChild(img);
-let itemTitle = document.getElementById("title");
-let itemPrice = document.getElementById("price");
-let itemDescription = document.getElementById("description");
-let itemColors = document.getElementById("colors");
+getProduct();
 
-// Get a unique product by its ID
 
-getItem ();
+// Récupération des articles de l'API
+function getProduct() {
+    fetch(`http://localhost:3000/api/products//${id}`)
+    .then((res) => {
+        return res.json();
+    })
 
-async function getItem () {
-    await fetch(`http://localhost:3000/api/products/${id}`)
-    .then((response) => response.json())
-    .then (item => {
-     itemImage.src = item.imageUrl;
-     itemImage.alt = item.altTxt;
-     itemTitle.innerHTML = item.name;
-     itemPrice.innerHTML = item.price;
-     itemDescription.innerText = item.description;
-     document.title = item.title;
 
-     let itemColors = document.getElementById("colors");
-     for(let i=0; i < item.colors.length; i++) {
-         let option = document.createElement("option");
-         option.innerText = item.colors [i];
-         itemColors.appendChild(option);
-     }
+    // Répartition des données de l'API dans le DOM
+    .then(async function (resultsAPI) {
+        product = await resultsAPI;
+         if (product){
+            getPost(product);
+        }
     })
 }
+    
+function getPost(product){
+    // insertion des information du produit
+    let itemImg = document.createElement("img");
+    document.querySelector(".item__img").appendChild(itemImg);
+    itemImg.src = product.imageUrl;
+    itemImg.alt = product.altTxt;
+
+    let itemName = document.getElementById('title');
+    itemName.innerHTML = product.name;
+
+    let itemPrice = document.getElementById('price');
+    itemPrice.innerHTML = product.price;
+
+    let itemDescription = document.getElementById('description');
+    itemDescription.innerHTML = product.description;
+
+
+    // Insertion des options de couleurs
+    let productColors = document.getElementById("colors");
+   for (let i=0; i < product.colors.length; i++) {
+   let option = document.createElement("option");
+   option.innerText = product.colors [i];
+   productColors.appendChild(option);
+}
+
+    addToCart(product);
+}
+
+
+//Gestion du panier
+function addToCart(product) {
+    const addToCartBtn = document.querySelector("#addToCart");
+    const color = document. querySelector("#colors");
+   const quantity = document.querySelector("#quantity");
+
+
+
+    //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
+    addToCartBtn.addEventListener("click", ()=>{
+        if (color.value !== null || quantity.value > 0){
+
+
+    //Recupération du choix de la couleur
+    let colorChoice = color.value;
+                
+    //Recupération du choix de la quantité
+    let quantityChoice = quantity.value;
+
+
+    //créer un nouveau produit à ajouter au panier
+    let articleInCart = {
+        articleId: id,
+        articleColor: colorChoice,
+        articleQuantity: quantityChoice,
+        articleName: product.name,
+        articlePrice: product.price,
+        articleDescription: product.description,
+        articleImg: product.imageUrl,
+        articleAltImg: product.altTxt
+    };
+
+
+    //Initialisation du local storage
+    let cart = JSON.parse(localStorage.getItem("article"));
+
+
+    //Importation dans le local storage
+    //verification si l'article n'existe dèjà dans le panier
+    if (cart) {
+    const articleExist = cart.find(
+        (el) => el.articleId === id && el.articleColor === colorChoice);
+        //S'il est déjà present, incrémente seulement la quantité
+        if (articleExist) {
+            let newQuantite =
+            parseInt(articleInCart.articleQuantity) + parseInt(articleExist.articleQuantity);
+            articleExist.articleQuantity = newQuantite;
+            localStorage.setItem("article", JSON.stringify(cart));
+           
+        //Si le produit commandé n'est pas dans le panier
+        } else {
+            cart.push(articleInCart);
+            localStorage.setItem("article", JSON.stringify(cart));
+            
+        }
+    //Si le panier est vide
+    } else {
+        cart =[];
+        cart.push(articleInCart);
+        localStorage.setItem("article", JSON.stringify(cart));
+        
+    }}
+    });
+}
+
+
+    
+    
+
+
 
 
 
