@@ -61,9 +61,9 @@ function addToCart(product) {
 
 
 
-    //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
+    //Ecouter le panier avec 2 conditions couleur non nulle et quantité plus de 0
     addToCartBtn.addEventListener("click", ()=>{
-        if (color.value !== null || quantity.value > 0){
+        if (color.value !== null && quantity.value > 0){
 
 
     //Recupération du choix de la couleur
@@ -89,6 +89,10 @@ function addToCart(product) {
     //Initialisation du local storage
     let cart = JSON.parse(localStorage.getItem("article"));
 
+    
+    function pageRedirect () {
+        window.location.href ="cart.html";
+    }
 
     //Importation dans le local storage
     //verification si l'article n'existe dèjà dans le panier
@@ -97,22 +101,24 @@ function addToCart(product) {
         (el) => el.articleId === id && el.articleColor === colorChoice);
         //S'il est déjà present, incrémente seulement la quantité
         if (articleExist) {
-            let newQuantite =
+            let newQuantity =
             parseInt(articleInCart.articleQuantity) + parseInt(articleExist.articleQuantity);
-            articleExist.articleQuantity = newQuantite;
+            articleExist.articleQuantity = newQuantity;
             localStorage.setItem("article", JSON.stringify(cart));
+            pageRedirect()
            
         //Si le produit commandé n'est pas dans le panier
         } else {
             cart.push(articleInCart);
             localStorage.setItem("article", JSON.stringify(cart));
-            
+            pageRedirect()
         }
     //Si le panier est vide
     } else {
         cart =[];
         cart.push(articleInCart);
         localStorage.setItem("article", JSON.stringify(cart));
+        pageRedirect()
         
     }}
     });
