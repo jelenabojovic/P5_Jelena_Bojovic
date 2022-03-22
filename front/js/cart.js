@@ -83,6 +83,38 @@ for (let article in cart) {
 
 }
 
+function displayTotals(){
 
+
+    // Récupération du total des quantités
+    let productQtt = document.getElementsByClassName('itemQuantity');
+    let cartLength = productQtt.length,
+    totalQtt = 0;
+
+
+    for (let i = 0; i < cartLength; i++) {
+        totalQtt += productQtt[i].valueAsNumber;
+    }
+
+
+    let productTotalQuantity = document.getElementById('totalQuantity');
+    productTotalQuantity.innerHTML = totalQtt;
+    console.log(totalQtt);
+
+
+    // Récupération du prix total
+    totalPrice = 0;
+
+
+    for (let i = 0; i < cartLength; i++) {
+        totalPrice += (productQtt[i].valueAsNumber * cart[i].articlePrice);
+    }
+
+
+    let productTotalPrice = document.getElementById('totalPrice');
+    productTotalPrice.innerHTML = totalPrice;
+    console.log(totalPrice);
+}
+displayTotals();
 
 
