@@ -2,6 +2,8 @@
 let cart = JSON.parse(localStorage.getItem("article"));
 console.table(cart);
 
+function displayCart () {
+
 for (let article in cart) {
     //création de la balise article et insertion dans la section
     let productArticle = document.createElement("article");
@@ -79,42 +81,108 @@ for (let article in cart) {
     let productSupprimer = document.createElement("p");
     productItemContentSettingsDelete.appendChild(productSupprimer);
     productSupprimer.innerHTML = "Supprimer";
+}    
+
+}
+
+displayCart ();
+
+function getTotals () {
+    displayTotalQuantity()
+    displayTotalPrice()
+    }
+    
+    
+    function displayTotalQuantity () {
+        const productQtt = document.querySelector(".itemQuantity");
+        let totalQtt = 0;
+        for (let article in cart) {
+        totalQtt += parseInt(cart[article].articleQuantity);
+        }
+    
+        let productTotalQuantity = document.getElementById('totalQuantity');
+        productTotalQuantity.innerHTML = totalQtt;
+        console.log(totalQtt)
+    }
+    
+    
+    function displayTotalPrice () {
+        let total = 0;
+        const totalPrice = document.querySelector("#totalPrice")
+        for (let article in cart) {
+        const totalUnitPrice = parseInt (cart[article].articlePrice * cart[article].articleQuantity);
+        total += totalUnitPrice;
+        totalPrice.innerHTML = total;
+        console.log(total)
+        }
+    }
+    getTotals ();
     
 
-}
+// modification du quantité
+function changeQuantity () {
 
-function displayTotals(){
+    let modifyQtt = document.querySelectorAll(".itemQuantity");
+    console.log(modifyQtt)
 
-
-    // Récupération du total des quantités
-    let productQtt = document.getElementsByClassName('itemQuantity');
-    let cartLength = productQtt.length,
-    totalQtt = 0;
-
-
-    for (let i = 0; i < cartLength; i++) {
-        totalQtt += productQtt[i].valueAsNumber;
+    for (let i=0; i < modifyQtt.length; i++){
+        modifyQtt[i].addEventListener("change", (event) => {
+            event.preventDefault();
+    
+    
+            //selection de l'élement à modifier 
+            let quantityModify = cart[i].articleQuantity;
+            let qttModifValue = modifyQtt[i].valueAsNumber;
+    
+            const resultFind = cart.find((el) => el.qttModifValue !== quantityModify);
+    
+            resultFind.articleQuantity = qttModifValue;
+            cart[i].articleQuantity = resultFind.articleQuantity;
+    
+            localStorage.setItem("article", JSON.stringify(cart));
+            location.reload();
+        })
+    
     }
-
-
-    let productTotalQuantity = document.getElementById('totalQuantity');
-    productTotalQuantity.innerHTML = totalQtt;
-    console.log(totalQtt);
-
-
-    // Récupération du prix total
-    totalPrice = 0;
-
-
-    for (let i = 0; i < cartLength; i++) {
-        totalPrice += (productQtt[i].valueAsNumber * cart[i].articlePrice);
     }
+    changeQuantity ();
+
+    // Suppression d'un produit
+	function deleteProduct() {
+
+	    const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete");
+        console.log(deleteBtn)
+
+	    for (let i = 0; i < deleteBtn.length; i++){
+	        deleteBtn[i].addEventListener("click",(event) => {
+	            event.preventDefault();
+	
+
+	            //Selection de l'element à supprimer en fonction de son id ET sa couleur
+	            let idDelete = cart[i].articleId;
+	            let colorDelete = cart[i].articleColor;
+	
+
+	            let productToDelete = cart.findIndex(el => el.articleId !== idDelete || el.articleColor !== colorDelete );
+                cart.splice(productToDelete,1);
+	            console.log(cart);
+
+                deleteConfirm = window.confirm(
+                  "Etes vous sûr de vouloir supprimer cet article ?"
+                );
+                if (deleteConfirm == true) {
+                  localStorage.setItem("article", JSON.stringify(cart));
+                  location.reload();
+                  alert("Article supprimé avec succès");
+                }
+          
+	        })
+	    }
+	}
+	deleteProduct();
+
+        
 
 
-    let productTotalPrice = document.getElementById('totalPrice');
-    productTotalPrice.innerHTML = totalPrice;
-    console.log(totalPrice);
-}
-displayTotals();
 
 
