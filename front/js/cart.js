@@ -119,34 +119,42 @@ function getTotals () {
     getTotals ();
     
 
-// modification du quantité
-function changeQuantity () {
-
-    let modifyQtt = document.querySelectorAll(".itemQuantity");
-    console.log(modifyQtt)
-
-    for (let i=0; i < modifyQtt.length; i++){
-        modifyQtt[i].addEventListener("change", (event) => {
+// Modification d'une quantité de produit
+function changeQuantity() {
+    let quantityInput = document.querySelectorAll(".itemQuantity");
+    console.log(quantityInput);
+  
+  
+    for (let i = 0; i < quantityInput.length; i++){
+        quantityInput[i].addEventListener("change" , (event) => {
             event.preventDefault();
-    
-    
-            //selection de l'élement à modifier 
-            let quantityModify = cart[i].articleQuantity;
-            let qttModifValue = modifyQtt[i].valueAsNumber;
-    
-            const resultFind = cart.find((el) => el.qttModifValue !== quantityModify);
-    
-            resultFind.articleQuantity = qttModifValue;
-            cart[i].articleQuantity = resultFind.articleQuantity;
-    
+  
+  
+            //Selection de l'element à modifier en fonction de son id ET sa couleur
+            let qttModifValue = quantityInput[i].valueAsNumber;
+            let dataId = cart[i].articleId;
+            let dataColor = cart[i].articleColor;
+        
+            
+            if (cart){
+            const resultFind = cart.find(
+              (el) => el.articleId === dataId && el.articleColor === dataColor);
+            
+              if(resultFind) {
+  
+            cart[i].articleQuantity = qttModifValue;
+  
             localStorage.setItem("article", JSON.stringify(cart));
+            }
+          }
+            // refresh rapide
             location.reload();
         })
-    
     }
-    }
-    changeQuantity ();
-
+  }
+  changeQuantity();
+  
+  
     // Suppression d'un produit
 	function deleteProduct() {
 
