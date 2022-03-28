@@ -70,7 +70,9 @@ for (let article in cart) {
     productQuantity.setAttribute("name","itemQuantity");
     productQuantity.setAttribute("min","1");
     productQuantity.setAttribute("max","100");
+    productQuantity.setAttribute ("value", "productQuantity.value");
     productQuantity.value = cart[article].articleQuantity;
+
     
     //insertion de l'élément "div" pour supprimer le produit
     let productItemContentSettingsDelete = document.createElement("div");
@@ -171,23 +173,30 @@ function changeQuantity() {
 	            let colorDelete = cart[i].articleColor;
 	
 
-	            let productToDelete = cart.findIndex(el => el.articleId !== idDelete || el.articleColor !== colorDelete );
-                cart.splice(productToDelete,1);
-	            console.log(cart);
-
+	            cart = cart.filter(el => el.articleId !== idDelete || el.articleColor !== colorDelete );
+                
                 deleteConfirm = window.confirm(
                   "Etes vous sûr de vouloir supprimer cet article ?"
                 );
                 if (deleteConfirm == true) {
                   localStorage.setItem("article", JSON.stringify(cart));
                   location.reload();
-                  alert("Article supprimé avec succès");
+                  alert("Votre article a été supprimé");
                 }
           
 	        })
 	    }
 	}
 	deleteProduct();
+
+  //    Formulaire
+
+  // Variable regex
+  let nameRegex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+  let addressRegex = /^[a-z0-9\s,'-]*$/i;
+  let emailRegex = /^[A-Za-z0-9\-\.]+@([A-Za-z0-9\-]+\.)+[A-Za-z0-9-]{2,4}$/;
+  
+  //
 
         
 
