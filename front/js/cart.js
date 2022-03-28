@@ -196,7 +196,77 @@ function changeQuantity() {
   let addressRegex = /^[a-z0-9\s,'-]*$/i;
   let emailRegex = /^[A-Za-z0-9\-\.]+@([A-Za-z0-9\-]+\.)+[A-Za-z0-9-]{2,4}$/;
   
-  //
+  //Variables pour récupérer les id des champs de formulaire
+  let form = document.querySelector(".cart__order__form");
+
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const address = document.getElementById("address");
+  const city = document.getElementById("city");
+  const email = document.getElementById("email");
+
+  // Validation prénom
+  form.firstName.addEventListener("input", (event) => {
+    event.preventDefault();
+    if (nameRegex.test(firstName.value) == false || firstName.value == "") {
+      document.getElementById("firstNameErrorMsg").innerHTML =
+        "Prénom non valide";
+      return false;
+    } else {
+      document.getElementById("firstNameErrorMsg").innerHTML = "";
+      return true;
+    }
+  });
+
+   //validation nom
+   form.lastName.addEventListener("input", (event) => {
+    event.preventDefault();
+    if (nameRegex.test(lastName.value) == false || lastName.value == "") {
+      document.getElementById("lastNameErrorMsg").innerHTML = "Nom non valide";
+      return false;
+    } else {
+      document.getElementById("lastNameErrorMsg").innerHTML = "";
+      return true;
+    }
+  });
+
+  // Validation adresse
+ form.address.addEventListener("input", (event) => {
+  event.preventDefault();
+  if (addressRegex.test(address.value) == false || address.value == "") {
+    document.getElementById("addressErrorMsg").innerHTML = "Adresse non valide";
+    return false;
+  } else {
+    document.getElementById("addressErrorMsg").innerHTML = "";
+    return true;
+  }
+});
+
+// Validation ville
+form.city.addEventListener("input", (event) => {
+  event.preventDefault();
+  if (nameRegex.test(city.value) == false || city.value == "") {
+    document.getElementById("cityErrorMsg").innerHTML = "Ville non valide";
+    return false;
+  } else {
+    document.getElementById("cityErrorMsg").innerHTML = "";
+    return true;
+  }
+});
+
+// Validation email
+form.email.addEventListener("input", (event) => {
+  event.preventDefault();
+  if (emailRegex.test(email.value) == false || email.value == "") {
+    document.getElementById("emailErrorMsg").innerHTML = "Email non valide";
+    return false;
+  } else {
+    document.getElementById("emailErrorMsg").innerHTML = "";
+    return true;
+  }
+});
+
+
 
         
 
