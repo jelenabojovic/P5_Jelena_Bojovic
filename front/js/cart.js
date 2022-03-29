@@ -270,33 +270,55 @@ form.email.addEventListener("input", (event) => {
 const btn_commander = document.getElementById("order");
 //Ecouter le button commande
 btn_commander.addEventListener("click", (event)=>{
-//Construction d'un array depuis le local storage
-let idProducts = [];
-for (let i = 0; i<cart.length;i++) {
-    idProducts.push(cart[i].articleId);
-}
-console.log(idProducts);
+
 //creation d'un objet contact
-const order = {
-  contact : {
+  let contact = {
       firstName: firstName.value,
       lastName: lastName.value,
       address: address.value,
       city: city.value,
       email: email.value,
-  },
-  products: idProducts,
-} 
+  };
+  console.log(contact)
 
-const options = {
-  method: 'POST',
-  headers: {
-      'Accept': 'application/json', 
-      "Content-Type": "application/json" 
-  },
-  body: JSON.stringify(order),
-};
-fetch("http://localhost:3000/api/products/order", options)
+  if (
+    firstName.value === "" ||
+    lastName.value === "" ||
+    address.value === "" ||
+    city.value === "" ||
+    email.value === ""
+  ) {
+    alert("Vous devez renseigner vos coordonnées pour passer la commande !");
+
+  } else if (
+    nameRegex.test(firstName.value) == false ||
+    nameRegex.test(lastName.value) == false ||
+    addressRegex.test(address.value) == false ||
+    nameRegex.test(city.value) == false ||
+    emailRegex.test(email.value) == false
+  ) {
+    alert("Merci de renseigner correctement vos coordonnées !");
+
+  } else {
+    ////Construction d'un array d'id depuis le local storage
+    let idProducts = [];
+    for (let i = 0; i<cart.length;i++) {
+    idProducts.push(cart[i].articleId);
+    console.log(idProducts)
+}
+   const products = idProducts;
+   const order = { contact, products };
+
+ // Appel à l'api order pour envoyer les tableaux
+   fetch("http://localhost:3000/api/products/order", {
+   method: "POST",
+   headers: {
+   Accept: "application/json",
+   "Content-type": "application/json",
+      },
+        body: JSON.stringify(order),
+    })
+
     .then((response) => response.json())
     .then((data) => {
         console.log(data);
@@ -304,15 +326,16 @@ fetch("http://localhost:3000/api/products/order", options)
         localStorage.setItem("orderId", data.orderId);
         console.log(data.orderId)
 
-
         document.location.href = "confirmation.html";
-    })
-    .catch((err) => {
-        alert ("une erreur est survenue");
-    });
-    })
+      })
+      .catch((err) => {
+          alert ("une erreur est survenue");
+      });
+    }
+  });
+   
 
-
+    
 
 
     
