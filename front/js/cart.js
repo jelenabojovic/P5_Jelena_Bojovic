@@ -266,6 +266,57 @@ form.email.addEventListener("input", (event) => {
   }
 });
 
+// Envoi des informations client au local storage
+const btn_commander = document.getElementById("order");
+//Ecouter le button commande
+btn_commander.addEventListener("click", (event)=>{
+//Construction d'un array depuis le local storage
+let idProducts = [];
+for (let i = 0; i<cart.length;i++) {
+    idProducts.push(cart[i].articleId);
+}
+console.log(idProducts);
+//creation d'un objet contact
+const order = {
+  contact : {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
+  },
+  products: idProducts,
+} 
+
+const options = {
+  method: 'POST',
+  headers: {
+      'Accept': 'application/json', 
+      "Content-Type": "application/json" 
+  },
+  body: JSON.stringify(order),
+};
+fetch("http://localhost:3000/api/products/order", options)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        localStorage.clear();
+        localStorage.setItem("orderId", data.orderId);
+        console.log(data.orderId)
+
+
+        document.location.href = "confirmation.html";
+    })
+    .catch((err) => {
+        alert ("une erreur est survenue");
+    });
+    })
+
+
+
+
+    
+    
 
 
         

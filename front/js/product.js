@@ -16,8 +16,8 @@ function getProduct() {
 
 
     // Répartition des données de l'API dans le DOM
-    .then(async function (resultsAPI) {
-        product = await resultsAPI;
+    .then(async function (results) {
+        product = await results;
          if (product){
             getPost(product);
         }
@@ -63,7 +63,8 @@ function addToCart(product) {
 
     //Ecouter le panier avec 2 conditions couleur non nulle et quantité plus de 0
     addToCartBtn.addEventListener("click", ()=>{
-        if (color.value !== null && quantity.value > 0){
+
+    if (color.value != null && color.value !=0 && quantity.value > 0 && quantity.value < 100){
 
 
     //Recupération du choix de la couleur
