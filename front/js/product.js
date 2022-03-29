@@ -92,6 +92,7 @@ function addToCart(product) {
 
     
     function pageRedirect () {
+        alert("Votre commande est ajoutée au panier!")
         window.location.href ="cart.html";
     }
 
@@ -107,19 +108,21 @@ function addToCart(product) {
             articleExist.articleQuantity = newQuantity;
             localStorage.setItem("article", JSON.stringify(cart));
             pageRedirect()
+            
            
         //Si le produit commandé n'est pas dans le panier
         } else {
             cart.push(articleInCart);
             localStorage.setItem("article", JSON.stringify(cart));
-            pageRedirect()
+            pageRedirect();
+            
         }
     //Si le panier est vide
     } else {
         cart =[];
         cart.push(articleInCart);
         localStorage.setItem("article", JSON.stringify(cart));
-        pageRedirect()
+        pageRedirect();    
         
     }}
     });
