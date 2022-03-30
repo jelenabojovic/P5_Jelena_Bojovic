@@ -104,7 +104,6 @@ function getTotals () {
     
         let productTotalQuantity = document.getElementById('totalQuantity');
         productTotalQuantity.innerHTML = totalQtt;
-        console.log(totalQtt)
     }
     
     
@@ -115,7 +114,6 @@ function getTotals () {
         const totalUnitPrice = parseInt (cart[article].articlePrice * cart[article].articleQuantity);
         total += totalUnitPrice;
         totalPrice.innerHTML = total;
-        console.log(total)
         }
     }
     getTotals ();
@@ -270,6 +268,7 @@ form.email.addEventListener("input", (event) => {
 const btn_commander = document.getElementById("order");
 //Ecouter le button commande
 btn_commander.addEventListener("click", (event)=>{
+  event.preventDefault ();
 
 //creation d'un objet contact
   let contact = {
@@ -279,7 +278,6 @@ btn_commander.addEventListener("click", (event)=>{
       city: city.value,
       email: email.value,
   };
-  console.log(contact)
 
   if (
     firstName.value === "" ||
@@ -300,7 +298,7 @@ btn_commander.addEventListener("click", (event)=>{
     alert("Merci de renseigner correctement vos coordonnées !");
 
   } else {
-    ////Construction d'un array d'id depuis le local storage
+    //Construction d'un array d'id depuis le local storage
     let idProducts = [];
     for (let i = 0; i<cart.length;i++) {
     idProducts.push(cart[i].articleId);
@@ -320,19 +318,17 @@ btn_commander.addEventListener("click", (event)=>{
     })
 
     .then((response) => response.json())
-    .then((data) => {
-        console.log(data);
-        localStorage.clear();
-        localStorage.setItem("orderId", data.orderId);
-        console.log(data.orderId)
-
-        document.location.href = "confirmation.html";
+    .then((value) => {
+      localStorage.setItem('orderId', value.orderId);    
+      document.location.href = `confirmation.html?id=${value.orderId}`;
       })
       .catch((err) => {
           alert ("une erreur est survenue");
       });
     }
   });
+   
+
    
 
     
