@@ -121,30 +121,23 @@ function getTotals () {
 
 // Modification d'une quantité de produit
 function changeQuantity() {
-    let quantityInput = document.querySelectorAll(".itemQuantity");
-    console.log(quantityInput);
+  let quantityInput = document.querySelectorAll(".itemQuantity");
   
+   for (let i = 0; i < quantityInput.length; i++){
+      quantityInput[i].addEventListener("change" , (event) => {
+      event.preventDefault();
   
-    for (let i = 0; i < quantityInput.length; i++){
-        quantityInput[i].addEventListener("change" , (event) => {
-            event.preventDefault();
-  
-  
-            //Selection de l'element à modifier en fonction de son id ET sa couleur
-            let qttModifValue = quantityInput[i].valueAsNumber;
-            let dataId = cart[i].articleId;
-            let dataColor = cart[i].articleColor;
+   //Selection de l'element à modifier en fonction de son id ET sa couleur
+   let qttModifValue = quantityInput[i].valueAsNumber;
+   let dataId = cart[i].articleId;
+   let dataColor = cart[i].articleColor;
         
+   if (cart){
+     const resultFind = cart.find((el) => el.articleId === dataId && el.articleColor === dataColor);
             
-            if (cart){
-            const resultFind = cart.find(
-              (el) => el.articleId === dataId && el.articleColor === dataColor);
-            
-              if(resultFind) {
-  
-            cart[i].articleQuantity = qttModifValue;
-  
-            localStorage.setItem("article", JSON.stringify(cart));
+   if(resultFind) {
+      cart[i].articleQuantity = qttModifValue;
+      localStorage.setItem("article", JSON.stringify(cart));
             }
           }
             // refresh rapide
@@ -155,35 +148,30 @@ function changeQuantity() {
   changeQuantity();
   
   
-    // Suppression d'un produit
+  // Suppression d'un produit
 	function deleteProduct() {
 
-	    const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete");
-        console.log(deleteBtn)
+  const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete");
 
-	    for (let i = 0; i < deleteBtn.length; i++){
-	        deleteBtn[i].addEventListener("click",(event) => {
-	            event.preventDefault();
+	for (let i = 0; i < deleteBtn.length; i++){
+	    deleteBtn[i].addEventListener("click",(event) => {
+	     event.preventDefault();
 	
-
-	            //Selection de l'element à supprimer en fonction de son id ET sa couleur
-	            let idDelete = cart[i].articleId;
-	            let colorDelete = cart[i].articleColor;
+  //Selection de l'element à supprimer en fonction de son id ET sa couleur
+	    let idDelete = cart[i].articleId;
+	    let colorDelete = cart[i].articleColor;
 	
-
-	            cart = cart.filter(el => el.articleId !== idDelete || el.articleColor !== colorDelete );
+     cart = cart.filter(el => el.articleId !== idDelete || el.articleColor !== colorDelete );
                 
-                deleteConfirm = window.confirm(
-                  "Etes vous sûr de vouloir supprimer cet article ?"
-                );
-                if (deleteConfirm == true) {
-                  localStorage.setItem("article", JSON.stringify(cart));
-                  location.reload();
-                  alert("Votre article a été supprimé");
-                }
+    deleteConfirm = window.confirm( "Etes vous sûr de vouloir supprimer cet article ?" );
+    if (deleteConfirm == true) {
+       localStorage.setItem("article", JSON.stringify(cart));
+       location.reload();
+       alert("Votre article a été supprimé");
+      }
           
-	        })
-	    }
+	   })
+	 }
 	}
 	deleteProduct();
 
@@ -302,7 +290,6 @@ btn_commander.addEventListener("click", (event)=>{
     let idProducts = [];
     for (let i = 0; i<cart.length;i++) {
     idProducts.push(cart[i].articleId);
-    console.log(idProducts)
 }
    const products = idProducts;
    const order = { contact, products };

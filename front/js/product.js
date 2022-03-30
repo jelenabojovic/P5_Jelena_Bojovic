@@ -1,4 +1,4 @@
-//// récupération de l'id du produit
+// Récupération de l'id du produit
 let params = (new URL(document.location)).searchParams;
 const id = params.get('id');
 let product = "";
@@ -55,26 +55,22 @@ function getPost(product){
 
 //Gestion du panier
 function addToCart(product) {
-    const addToCartBtn = document.querySelector("#addToCart");
-    const color = document. querySelector("#colors");
+   const addToCartBtn = document.querySelector("#addToCart");
+   const color = document. querySelector("#colors");
    const quantity = document.querySelector("#quantity");
 
+//Ecouter le panier avec 2 conditions 
+  addToCartBtn.addEventListener("click", ()=>{
 
+  if (color.value != null && color.value !=0 && quantity.value > 0 && quantity.value < 100){
 
-    //Ecouter le panier avec 2 conditions couleur non nulle et quantité plus de 0
-    addToCartBtn.addEventListener("click", ()=>{
-
-    if (color.value != null && color.value !=0 && quantity.value > 0 && quantity.value < 100){
-
-
-    //Recupération du choix de la couleur
-    let colorChoice = color.value;
+ //Recupération du choix de la couleur
+   let colorChoice = color.value;
                 
-    //Recupération du choix de la quantité
+  //Recupération du choix de la quantité
     let quantityChoice = quantity.value;
 
-
-    //créer un nouveau produit à ajouter au panier
+  //créer un nouveau produit à ajouter au panier
     let articleInCart = {
         articleId: id,
         articleColor: colorChoice,
@@ -85,7 +81,6 @@ function addToCart(product) {
         articleImg: product.imageUrl,
         articleAltImg: product.altTxt
     };
-
 
     //Initialisation du local storage
     let cart = JSON.parse(localStorage.getItem("article"));
@@ -117,6 +112,7 @@ function addToCart(product) {
             pageRedirect();
             
         }
+        
     //Si le panier est vide
     } else {
         cart =[];
