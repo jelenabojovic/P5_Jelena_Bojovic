@@ -41,8 +41,8 @@ function getPost(product){
     itemDescription.innerHTML = product.description;
 
 
-    // Insertion des options de couleurs
-    let productColors = document.getElementById("colors");
+// Insertion des options de couleurs
+   let productColors = document.getElementById("colors");
    for (let i=0; i < product.colors.length; i++) {
    let option = document.createElement("option");
    option.innerText = product.colors [i];
@@ -59,7 +59,7 @@ function addToCart(product) {
    const color = document. querySelector("#colors");
    const quantity = document.querySelector("#quantity");
 
-//Ecouter le panier avec 2 conditions 
+//Ecouter le panier avec deux conditions 
   addToCartBtn.addEventListener("click", ()=>{
 
   if (color.value != null && color.value !=0 && quantity.value > 0 && quantity.value < 100){
@@ -70,7 +70,7 @@ function addToCart(product) {
   //Recupération du choix de la quantité
     let quantityChoice = quantity.value;
 
-  //créer un nouveau produit à ajouter au panier
+  //Créer un nouveau produit à ajouter au panier
     let articleInCart = {
         articleId: id,
         articleColor: colorChoice,
@@ -85,7 +85,7 @@ function addToCart(product) {
     //Initialisation du local storage
     let cart = JSON.parse(localStorage.getItem("article"));
 
-    
+   //Redirection sur la page "panier" 
     function pageRedirect () {
         alert("Votre commande est ajoutée au panier!")
         window.location.href ="cart.html";
@@ -94,31 +94,29 @@ function addToCart(product) {
     //Importation dans le local storage
     //verification si l'article n'existe dèjà dans le panier
     if (cart) {
-    const articleExist = cart.find(
-        (el) => el.articleId === id && el.articleColor === colorChoice);
-        //S'il est déjà present, incrémente seulement la quantité
-        if (articleExist) {
-            let newQuantity =
-            parseInt(articleInCart.articleQuantity) + parseInt(articleExist.articleQuantity);
-            articleExist.articleQuantity = newQuantity;
-            localStorage.setItem("article", JSON.stringify(cart));
-            pageRedirect()
+        const articleExist = cart.find((el) => el.articleId === id && el.articleColor === colorChoice);
+
+     //S'il est déjà present, incrémente seulement la quantité
+    if (articleExist) {
+    let newQuantity =  parseInt(articleInCart.articleQuantity) + parseInt(articleExist.articleQuantity);
+    articleExist.articleQuantity = newQuantity;
+    localStorage.setItem("article", JSON.stringify(cart));
+     pageRedirect()
             
            
-        //Si le produit commandé n'est pas dans le panier
-        } else {
-            cart.push(articleInCart);
-            localStorage.setItem("article", JSON.stringify(cart));
-            pageRedirect();
-            
-        }
+     //Si le produit commandé n'est pas dans le panier
+     } else {
+     cart.push(articleInCart);
+     localStorage.setItem("article", JSON.stringify(cart));
+     pageRedirect();
+     }
         
     //Si le panier est vide
     } else {
-        cart =[];
-        cart.push(articleInCart);
-        localStorage.setItem("article", JSON.stringify(cart));
-        pageRedirect();    
+    cart =[];
+    cart.push(articleInCart);
+    localStorage.setItem("article", JSON.stringify(cart));
+    pageRedirect();    
         
     }}
     });

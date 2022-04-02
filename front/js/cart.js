@@ -1,7 +1,8 @@
-// Initialization du local storage
+// récupérer le panier (l’array) via localStorage
 let cart = JSON.parse(localStorage.getItem("article"));
 console.table(cart);
 
+//Créer et insérer des éléments dans la page 
 function displayCart () {
 
 for (let article in cart) {
@@ -89,24 +90,25 @@ for (let article in cart) {
 
 displayCart ();
 
+//calculer la total du panier
 function getTotals () {
     displayTotalQuantity()
     displayTotalPrice()
     }
     
-    
-    function displayTotalQuantity () {
-        const productQtt = document.querySelector(".itemQuantity");
-        let totalQtt = 0;
-        for (let article in cart) {
-        totalQtt += parseInt(cart[article].articleQuantity);
-        }
-    
-        let productTotalQuantity = document.getElementById('totalQuantity');
-        productTotalQuantity.innerHTML = totalQtt;
+ // calculer la quantité   
+function displayTotalQuantity () {
+    const productQtt = document.querySelector(".itemQuantity");
+    let totalQtt = 0;
+    for (let article in cart) {
+    totalQtt += parseInt(cart[article].articleQuantity);
     }
     
+   let productTotalQuantity = document.getElementById('totalQuantity');
+   productTotalQuantity.innerHTML = totalQtt;
+    }
     
+  //calculer le prix 
     function displayTotalPrice () {
         let total = 0;
         const totalPrice = document.querySelector("#totalPrice")
@@ -127,7 +129,7 @@ function changeQuantity() {
       quantityInput[i].addEventListener("change" , (event) => {
       event.preventDefault();
   
-   //Selection de l'element à modifier en fonction de son id ET sa couleur
+   //Selection de l'element à modifier en fonction de son id et sa couleur
    let qttModifValue = quantityInput[i].valueAsNumber;
    let dataId = cart[i].articleId;
    let dataColor = cart[i].articleColor;
@@ -140,7 +142,7 @@ function changeQuantity() {
       localStorage.setItem("article", JSON.stringify(cart));
             }
           }
-            // refresh rapide
+     // refresh rapide
             location.reload();
         })
     }
@@ -157,7 +159,7 @@ function changeQuantity() {
 	    deleteBtn[i].addEventListener("click",(event) => {
 	     event.preventDefault();
 	
-  //Selection de l'element à supprimer en fonction de son id ET sa couleur
+  //Selection de l'element à supprimer en fonction de son id et sa couleur
 	    let idDelete = cart[i].articleId;
 	    let colorDelete = cart[i].articleColor;
 	
@@ -294,7 +296,7 @@ btn_commander.addEventListener("click", (event)=>{
    const products = idProducts;
    const order = { contact, products };
 
- // Appel à l'api order pour envoyer les tableaux
+ // envoyer des données à l'API 
    fetch("http://localhost:3000/api/products/order", {
    method: "POST",
    headers: {
